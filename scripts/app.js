@@ -56,6 +56,25 @@ function deleteTodo(index) {
   saveData();
 }
 
+function editTodo(index) {
+  const todo = document.getElementsByClassName("todo")[index];
+  const comment = todo.getElementsByClassName("todo__comment")[0];
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = comment.innerText;
+  todo.replaceChild(input, comment);
+  const button = todo.getElementsByClassName("todo__edit")[0];
+  button.style.display = "none";
+  const saveButton = document.createElement("button");
+  saveButton.innerText = "Сохранить";
+  saveButton.onclick = function() {
+    comment.innerText = input.value;
+    todo.replaceChild(comment, input);
+    button.style.display = "inline-block";
+  };
+  todo.insertBefore(saveButton, todo.lastChild);
+}
+
 
 /* init */
 (() => {
