@@ -56,23 +56,31 @@ function deleteTodo(index) {
   saveData();
 }
 
-function editTodo(index) {
-  const todo = document.getElementsByClassName("todo")[index];
-  const comment = todo.getElementsByClassName("todo__comment")[0];
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = comment.innerText;
-  todo.replaceChild(input, comment);
-  const button = todo.getElementsByClassName("todo__edit")[0];
-  button.style.display = "none";
-  const saveButton = document.createElement("button");
-  saveButton.innerText = "Сохранить";
-  saveButton.onclick = function() {
-    comment.innerText = input.value;
-    todo.replaceChild(comment, input);
-    button.style.display = "inline-block";
-  };
-  todo.insertBefore(saveButton, todo.lastChild);
+function editTodo(event, index) {
+  const newTodo = event.target['comment'].value;
+  event.target['comment'].value = '';
+
+  todos[index] = newTodo;
+  rerender();
+  saveData();
+}
+
+function renderEditInput(index) {
+  const element = document.getElementById(`todo${index}`);
+  element.innerHTML = `
+              <div class="todo__day">Дело ${Number(index) + 1}</div>
+              <form class="todo__form" onsubmit="editTodo(event, ${index})">
+                <input name="comment" class="input_field" type="text" placeholder="${
+                  todos[index]
+                }" />
+                <button class="todo__delete" type="submit">
+                  <img src="./images/apply.svg" alt="apply todo ${index}" />
+                </button>
+                <button class="todo__edit" onclick="rerender()">
+                  <img src="./images/cancel.svg" alt="cancel todo ${index}" />
+                </button>
+              </form>
+          `;
 }
 
 
