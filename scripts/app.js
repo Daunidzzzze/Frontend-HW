@@ -1,10 +1,8 @@
 let todos = [];
 const TODO_KEY = 'TODO_KEY';
 
-
 const todosContainer = document.getElementById('days');
-const nextTodo = document.querySelector('.todo__day')
-
+const nextTodo = document.querySelector('.todo__day');
 
 function loadData() {
   const todosString = localStorage.getItem(TODO_KEY);
@@ -22,30 +20,39 @@ function rerender() {
   todosContainer.innerHTML = '';
   for (const index in todos) {
     const element = document.createElement('div');
-    element.classList.add('todo');
+    element.classList.add(`todo`);
     element.innerHTML = `<div class="todo__day">Дело ${Number(index) + 1}</div>
-              <div class="todo__comment">${todos[index]}</div>
-              <button class="todo__delete" onclick="deleteTodo(${index})">
-                <img src="./images/delete.svg" alt="Удалить дело ${index + 1}" />
-              </button>`;
+                          <div class="todo__comment">${todos[index]}</div>
+                          <button class="todo__delete" onclick="deleteTodo(${index})">
+                            <img src="./images/delete.svg" alt="Удалить дело ${
+                              index + 1
+                            }" />
+                          </button>
+                          <button class="todo__edit" onclick="renderEditInput(${index})">
+                            <img src="./images/edit.svg" alt="Edit todo ${
+                              index + 1
+                            }" />
+                          </button>
+                        `;
+
+    element.setAttribute('id', `todo${index}`);
     todosContainer.appendChild(element);
   }
   nextTodo.innerHTML = `Дело ${todos.length + 1}`;
 }
 
-
 /* work with todos */
 function addTodo(event) {
   event.preventDefault();
-  
-  const data = event.target['comment'].value
+
+  const data = event.target['comment'].value;
   if (!data) {
     return;
   }
-  
-  todos.push(data)
+
+  todos.push(data);
   event.target['comment'].value = '';
-  
+
   rerender();
   saveData();
 }
@@ -82,7 +89,6 @@ function renderEditInput(index) {
               </form>
           `;
 }
-
 
 /* init */
 (() => {
